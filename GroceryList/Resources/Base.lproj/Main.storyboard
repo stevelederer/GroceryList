@@ -16,9 +16,9 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="nJX-EN-UaD">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.84250599145889282" green="0.9725303053855896" blue="0.97255009412765503" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="groceryItemCell" rowHeight="50" id="3cB-2q-4zw" customClass="ButtonTableViewCell" customModule="GroceryList" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="groceryItemCell" rowHeight="50" id="3cB-2q-4zw" customClass="ButtonTableViewCell" customModule="GroceryList" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3cB-2q-4zw" id="ZpZ-s4-Jqd">
@@ -55,6 +55,7 @@
                                         <constraint firstItem="dc3-Tj-7E5" firstAttribute="centerY" secondItem="ZpZ-s4-Jqd" secondAttribute="centerY" id="zyv-ic-WxH"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.84250599145889282" green="0.9725303053855896" blue="0.97255009412765503" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <connections>
                                     <outlet property="inCartButton" destination="yx9-2G-IwV" id="ROd-bl-mkJ"/>
                                     <outlet property="itemNameLabel" destination="WWq-9Q-vad" id="gEM-eE-iEM"/>
@@ -85,6 +86,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="S70-Ju-upr">
                         <rect key="frame" x="0.0" y="44" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" red="0.0" green="0.99143940210000003" blue="1" alpha="0.75" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <connections>
                         <segue destination="IZI-kd-urK" kind="relationship" relationship="rootViewController" id="d4o-vf-IDw"/>

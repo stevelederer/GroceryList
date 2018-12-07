@@ -18,7 +18,7 @@ class GroceryListTableViewController: UITableViewController {
         // selector makes name case insentive
         let groceryNameSortDescriptor = NSSortDescriptor(key: "name", ascending: true, selector: #selector(NSString.caseInsensitiveCompare))
         request.sortDescriptors = [groceryInCartSortDescriptor, groceryNameSortDescriptor]
-        return NSFetchedResultsController(fetchRequest: request, managedObjectContext: CoreDataStack.context, sectionNameKeyPath: nil, cacheName: nil)
+        return NSFetchedResultsController(fetchRequest: request, managedObjectContext: CoreDataStack.context, sectionNameKeyPath: "inCart", cacheName: nil)
     }()
     
     // MARK: - View LifeCycle
@@ -38,16 +38,34 @@ class GroceryListTableViewController: UITableViewController {
     }
     
     // MARK: - Table View Data Source and Delegate
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController.fetchedObjects?.count ?? 0
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        guard let sections = fetchedResultsController.sections?.count else { return 1 }
+        return sections
     }
     
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let sections = fetchedResultsController.sections else { fatalError("No sections in fetchedResultsController") }
+        let sectionInfo = sections[section]
+        return sectionInfo.numberOfObjects
+    }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "groceryItemCell", for: indexPath) as! ButtonTableViewCell
         cell.delegate = self
         let grocery = fetchedResultsController.object(at: indexPath)
         cell.grocery = grocery
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard let sectionInfo = fetchedResultsController.sections?[section] else { return nil }
+        switch sectionInfo.name {
+        case "0":
+            return "Items to Buy"
+        case "1":
+            return "Items in Cart"
+        default:
+            return ""
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -64,6 +82,23 @@ class GroceryListTableViewController: UITableViewController {
 
 // MARK: - FetchedResultsControllerDelegate
 extension GroceryListTableViewController: NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        switch type {
+        case .insert:
+            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+        case .delete:
+            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
+        case .move:
+            break
+        case .update:
+            break
+        }
+    }
+    
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
         case.delete:
@@ -79,6 +114,10 @@ extension GroceryListTableViewController: NSFetchedResultsControllerDelegate {
             guard let indexPath = indexPath else { return }
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
     }
 }
 
@@ -99,6 +138,8 @@ extension GroceryListTableViewController {
         let alertController = UIAlertController(title: "🛒Grocery List🛒", message: "What do you need to buy?", preferredStyle: .alert)
         alertController.addTextField { (textField) in
             textField.placeholder = "Enter item name..."
+            textField.autocapitalizationType = .words
+            textField.autocorrectionType = .yes
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
