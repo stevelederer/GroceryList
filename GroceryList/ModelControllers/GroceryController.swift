@@ -28,6 +28,7 @@ class GroceryController {
     
     func toggle(grocery: Grocery) {
         grocery.inCart.toggle()
+        saveToPersistentStore()
     }
     
     // MARK: - Save to Persistent Store
